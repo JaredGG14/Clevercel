@@ -56,7 +56,6 @@ class PassportAuthController extends Controller
             // De ser datos válidos nos mandara a la bienvenida
             $token = auth()->user()->createToken("LaravelAuthApp")->accessToken;
             $userdata = auth()->user();
-
             return response()->json(["token" => $token, "user" => $userdata], 200);
         } else{
          // En caso de que la autenticación haya fallado manda un mensaje al formulario de login.

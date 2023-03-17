@@ -7,8 +7,9 @@ use App\Models\Carrito;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 
-use Darryldecode\Cart\Cart;
-use Stripe\Product;
+
+//use Darryldecode\Cart\Cart;
+//use Stripe\Product;
 
 class CarritoController extends Controller
 {
@@ -23,9 +24,10 @@ class CarritoController extends Controller
     //con el ID del carrito seleccionado (aunque por el momento yo creo que vamos a usar uno activo)
     public function index()
     {
-        //
-        $carrito = Carrito::all();
-        return $carrito;
+        $user = auth()->user()->email;
+        $carrito_todos = Carrito::where('usuario_email', $user)->get();
+        $carrito_activos = $carrito_todos->where('estado', 'Activo');
+        return $carrito_activos;
     }
 
     /**
@@ -36,6 +38,7 @@ class CarritoController extends Controller
      */
     public function add(Request $request)
     {
+        $user = auth()->user()->email;
         //Al mandar a agregar un producto que agregue el estado activo por default
         //Agregar qué usuario agregó el producto y ver de qué manera podemos agregar todo a un mismo carrito.
         $producto = Producto::find($request->id);
@@ -47,7 +50,9 @@ class CarritoController extends Controller
         $carritos -> descripcion = $producto-> descripcion;
         $carritos -> precio = $producto-> precio;
         $carritos -> cantidad = $request-> cantidad;
-        //$carritos -> Estado = 'Activo';
+        $carritos -> estado = 'Activo';
+        $carritos -> usuario_email = $user; //Testing
+        $carritos -> no_carrito = 1; //testing
         $carritos -> save();
 
         return $carritos;
@@ -73,9 +78,9 @@ class CarritoController extends Controller
      */
     public function update(Request $request, Carrito $carritos)
     {
-        //Actualizar solamente 
         $carritos = Carrito::find($request->id);
         $carritos -> cantidad = $request-> cantidad;
+        $carritos -> estado = 'Modificado';
         $carritos -> save();
         return $carritos;
     }
@@ -88,7 +93,9 @@ class CarritoController extends Controller
      */
     public function destroy(Request $request, Carrito $carritos)
     {
-        //
+        //Envía los productos a la tabla carritos_eliminados
+
+
         $carritos = Carrito::destroy($request->id);
         echo "Producto eliminado";
     }

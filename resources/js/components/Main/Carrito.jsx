@@ -123,6 +123,7 @@ function Carrito() {
     console.log("cantidad:", cant)
 
 
+
     const createOrder = (data, actions) => {
         return actions.order.create({
             purchase_units: [
