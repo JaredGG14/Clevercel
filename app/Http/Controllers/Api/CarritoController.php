@@ -17,6 +17,10 @@ class CarritoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    //Cambiar el query a que traiga los productos del usuario que tiene la sesión iniciada
+    //que tenga el estado "Activo" y "Modificado"
+    //con el ID del carrito seleccionado (aunque por el momento yo creo que vamos a usar uno activo)
     public function index()
     {
         //
@@ -32,7 +36,8 @@ class CarritoController extends Controller
      */
     public function add(Request $request)
     {
-        //
+        //Al mandar a agregar un producto que agregue el estado activo por default
+        //Agregar qué usuario agregó el producto y ver de qué manera podemos agregar todo a un mismo carrito.
         $producto = Producto::find($request->id);
         $carritos = new Carrito();
         $carritos -> imagen = $producto -> imagen;
@@ -68,7 +73,7 @@ class CarritoController extends Controller
      */
     public function update(Request $request, Carrito $carritos)
     {
-        //
+        //Actualizar solamente 
         $carritos = Carrito::find($request->id);
         $carritos -> cantidad = $request-> cantidad;
         $carritos -> save();
