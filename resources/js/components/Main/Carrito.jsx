@@ -1,5 +1,5 @@
-import {Button, Form, Col, Row, Table, Modal} from 'react-bootstrap';
-import React, { useEffect, useState} from 'react';
+import { Button, Form, Col, Row, Table, Modal } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactDOM from "react-dom"
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +17,7 @@ function ProductUpdate(props) {
         navigate('/carro')
     }
 
-    
+
     return (
         <Modal
             {...props}
@@ -47,11 +47,11 @@ function ProductUpdate(props) {
         </Modal>
     );
 }
-
+const user = localStorage.getItem("user");
 function ProductoDeleted(props) {
     const endpoint = 'http://localhost/example-app/public/api/carrito_delete'
     const deleteProducto = async (id) => {
-        await axios.post(endpoint, { id: id })
+        await axios.post(endpoint, { id: id, user: user})
         alert("Producto eliminado");
         navigate('/')
     }
@@ -68,7 +68,7 @@ function ProductoDeleted(props) {
             </Modal.Header>
             <Modal.Footer>
                 <Button onClick={() => deleteProducto(props.producto.id)} className='btn btn-danger'>Delete</Button>
-                <Button onClick={()=>window.location.reload()}>Cerrar</Button>
+                <Button onClick={() => window.location.reload()}>Cerrar</Button>
             </Modal.Footer>
         </Modal>
     );
@@ -79,12 +79,12 @@ function Carrito() {
     const [modalShow1, setModalShow1] = useState(false);
     const [modalShow2, setModalShow2] = useState(false);
     const [productoDatos, setProductoDatos] = useState({});
-    
-   const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user")
-   if (token == null){
-    navigate("/example-app/public/login")
-   }
+
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    if (token == null) {
+        navigate("/example-app/public/login")
+    }
 
     const getAllProducto = async () => {
         const response = await axios.get(`http://localhost/example-app/public/api/carrito_index/${user}`);
@@ -131,11 +131,11 @@ function Carrito() {
                     description: "Airpods 3a",
                     amount: {
                         value: "226.00",
-                  },
+                    },
                 },
-              ],
+            ],
         });
-      };
+    };
 
     const onApprove = async (data, actions) => {
         const response = await axios.get(`http://localhost/example-app/public/api/carrito_clear`)
@@ -206,15 +206,15 @@ function Carrito() {
                                 <h4> <strong>{cant}</strong> producto(s) </h4>
                                 <div className="d-grid gap-2" style={{ marginLeft: "5%", marginRight: "5%" }}>
                                     <div>
-                                            <PayPalButton
-                                                createOrder={(data, actions) => createOrder(data, actions)}
-                                                onApprove={(data, actions) => onApprove(data, actions)}
-                                                />
+                                        <PayPalButton
+                                            createOrder={(data, actions) => createOrder(data, actions)}
+                                            onApprove={(data, actions) => onApprove(data, actions)}
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </Col>
-                    </Row>                   
+                    </Row>
                 </div>
             </div>
         </>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CategoriasController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\UsuarioController;
 use App\Http\Controllers\Api\CarritoController;
+use App\Http\Controllers\CarritoEliminadoController;
 use App\Http\Controllers\PassportAuthController;
 
 /*
@@ -40,6 +41,9 @@ Route::post('/carrito_add', [CarritoController::class, 'add']);
 Route::post('/carrito_edit', [CarritoController::class, 'update']);
 Route::post('/carrito_delete', [CarritoController::class, 'destroy']);
 Route::post('/carrito_clear', [CarritoController::class, 'clear']);
+
+Route::post('/carrito_delete_add', [CarritoEliminadoController::class, 'add']);
+
 
 Route::middleware('auth:api')->group(
     function () {

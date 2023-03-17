@@ -29,7 +29,7 @@ function Login() {
             }, headers)
             .then(response => {
                 localStorage.setItem("token", response.data.token);
-                console.log("token: ", response.data.token);
+                //console.log("token: ", response.data.token);
 
                 setUserLogged(true);
                 localStorage.setItem("user", JSON.stringify(response.data.user));

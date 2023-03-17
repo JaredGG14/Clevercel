@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
+use App\Models\carrito_actualizado;
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use App\Models\carrito_eliminado;
 
 
 //use Darryldecode\Cart\Cart;
@@ -24,7 +26,6 @@ class CarritoController extends Controller
     //con el ID del carrito seleccionado (aunque por el momento yo creo que vamos a usar uno activo)
     public function index($user)
     {
-        
         $carrito_todos = Carrito::where('usuario_email', $user)->get();
         $carrito_activos = $carrito_todos->where('estado', 'Activo');
         return $carrito_activos;
@@ -42,16 +43,16 @@ class CarritoController extends Controller
         //Agregar qué usuario agregó el producto y ver de qué manera podemos agregar todo a un mismo carrito.
         $producto = Producto::find($request->id);
         $carritos = new Carrito();
-        $carritos -> imagen = $producto -> imagen;
-        $carritos -> producto = $producto-> producto;
-        $carritos -> memoria = $producto-> memoria;
-        $carritos -> color = $producto-> color;
-        $carritos -> descripcion = $producto-> descripcion;
-        $carritos -> precio = $producto-> precio;
-        $carritos -> cantidad = $request-> cantidad;
-        $carritos -> estado = 'Activo';
-        $carritos -> usuario_email = $request->user; //Testing
-        $carritos -> save();
+        $carritos->imagen = $producto->imagen;
+        $carritos->producto = $producto->producto;
+        $carritos->memoria = $producto->memoria;
+        $carritos->color = $producto->color;
+        $carritos->descripcion = $producto->descripcion;
+        $carritos->precio = $producto->precio;
+        $carritos->cantidad = $request->cantidad;
+        $carritos->estado = 'Activo';
+        $carritos->usuario_email = $request->user; //Testing
+        $carritos->save();
 
         return $carritos;
     }
@@ -76,10 +77,26 @@ class CarritoController extends Controller
      */
     public function update(Request $request, Carrito $carritos)
     {
+
+        $carrito_user = Carrito::where('usuario_email', $request->user)->get();
+        
+        foreach ($carrito_user as $carrito_arreglo) {
+            $carrito_upd = new carrito_actualizado();
+            $carrito_upd->imagen = $carrito_arreglo->imagen;
+            $carrito_upd->producto = $carrito_arreglo->producto;
+            $carrito_upd->memoria = $carrito_arreglo->memoria;
+            $carrito_upd->color = $carrito_arreglo->color;
+            $carrito_upd->descripcion = $carrito_arreglo->descripcion;
+            $carrito_upd->precio = $carrito_arreglo->precio;
+            $carrito_upd->cantidad = $carrito_arreglo->cantidad;
+            $carrito_upd->estado = $carrito_arreglo->estado;
+            $carrito_upd->usuario_email = $carrito_arreglo->user; //Testing
+            $carrito_upd->save();
+        }
+
         $carritos = Carrito::find($request->id);
-        $carritos -> cantidad = $request-> cantidad;
-        $carritos -> estado = 'Modificado';
-        $carritos -> save();
+        $carritos->cantidad = $request->cantidad;
+        $carritos->save();
         return $carritos;
     }
 
@@ -89,12 +106,42 @@ class CarritoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Carrito $carritos)
+    public function destroy(Request $request, Carrito $carrito)
     {
         //Envía los productos a la tabla carritos_eliminados
 
 
-        $carritos = Carrito::destroy($request->id);
+        /*$carrito_d = new carrito_eliminado();
+        $carrito_d->imagen = $carrito->imagen;
+        $carrito_d->producto = $carrito->producto;
+        $carrito_d->memoria = $carrito->memoria;
+        $carrito_d->color = $carrito->color;
+        $carrito_d->descripcion = $carrito->descripcion;
+        $carrito_d->precio = $carrito->precio;
+        $carrito_d->cantidad = $carrito->cantidad;
+        $carrito_d->estado = 'Inactivo';
+        $carrito_d->usuario_email = $request->user; //Testing */
+
+        $carrito_user = Carrito::where('usuario_email', $request->user)->get();
+        
+        foreach ($carrito_user as $carrito_arreglo) {
+            $carrito_d_h = new carrito_eliminado();
+            $carrito_d_h->imagen = $carrito_arreglo->imagen;
+            $carrito_d_h->producto = $carrito_arreglo->producto;
+            $carrito_d_h->memoria = $carrito_arreglo->memoria;
+            $carrito_d_h->color = $carrito_arreglo->color;
+            $carrito_d_h->descripcion = $carrito_arreglo->descripcion;
+            $carrito_d_h->precio = $carrito_arreglo->precio;
+            $carrito_d_h->cantidad = $carrito_arreglo->cantidad;
+            $carrito_d_h->estado = $carrito_arreglo->estado;
+            $carrito_d_h->usuario_email = $request->user; //Testing
+            $carrito_d_h->save();
+        }
+
+        $carrito_d = carrito_eliminado::find($request->id);
+        $carrito_d -> estado = 'Inactivo';
+
+        $carrito = Carrito::destroy($request->id);
         echo "Producto eliminado";
     }
 
