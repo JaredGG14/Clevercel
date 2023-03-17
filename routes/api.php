@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/carrito_index', [CarritoController::class, 'index']);
+Route::get('/carrito_index/{id}', [CarritoController::class, 'index']);
 Route::get('/category_index', [CategoriasController::class, 'index']);
 
 Route::get('/product_index', [ProductoController::class, 'index']);

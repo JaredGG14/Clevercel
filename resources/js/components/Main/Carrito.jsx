@@ -81,13 +81,13 @@ function Carrito() {
     const [productoDatos, setProductoDatos] = useState({});
     
    const token = localStorage.getItem("token");
-
+    const user = localStorage.getItem("user")
    if (token == null){
     navigate("/example-app/public/login")
    }
 
     const getAllProducto = async () => {
-        const response = await axios.get(`http://localhost/example-app/public/api/carrito_index`)
+        const response = await axios.get(`http://localhost/example-app/public/api/carrito_index/${user}`);
         setProducto(response.data)
     }
 

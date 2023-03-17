@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 
 class PassportAuthController extends Controller
 {
@@ -54,8 +55,10 @@ class PassportAuthController extends Controller
         if(auth()->attempt($userdata))
         {
             // De ser datos válidos nos mandara a la bienvenida
+            Auth::login($userdata);
             $token = auth()->user()->createToken("LaravelAuthApp")->accessToken;
             $userdata = auth()->user();
+            Auth::login($userdata);
             return response()->json(["token" => $token, "user" => $userdata], 200);
         } else{
          // En caso de que la autenticación haya fallado manda un mensaje al formulario de login.

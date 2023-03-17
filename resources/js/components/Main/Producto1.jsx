@@ -22,7 +22,7 @@ function Producto1() {
         const user = localStorage.getItem("user");
         if (token !== null) {
             const endpoint = 'http://localhost/example-app/public/api/carrito_add'
-            await axios.post(endpoint, { id: id, cantidad: cantidad, email: user})
+            await axios.post(endpoint, { id: id, cantidad: cantidad, user: user})
             alert("Agregado");
             navigate('/example-app/public/carro')
         } else{

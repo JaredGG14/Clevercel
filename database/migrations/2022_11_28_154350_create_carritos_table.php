@@ -24,7 +24,6 @@ return new class extends Migration
             $table->integer('cantidad');
             $table->string('estado', 50);
             $table->string('usuario_email', 500);
-            $table->integer('no_carrito');
             $table->timestamps();
         });
     }
