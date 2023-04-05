@@ -19,6 +19,7 @@ function Login() {
     const login = async (e) => {
         e.preventDefault();
         console.log("Login")
+
         const headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -34,14 +35,22 @@ function Login() {
                 setUserLogged(true);
                 localStorage.setItem("user", JSON.stringify(response.data.user));
                 setUser(response.data.user);
-                if (response.data.user.rol === "Administrador") {
+                if(response.data.user.rol === "Administrador") {
                     console.log("Sesión iniciada", email, password);
                     console.log("Administrador: ", response.data.user.nombre, " ", response.data.user.apellido);
                     alert("Sesión iniciada " + response.data.user.nombre + " " + response.data.user.apellido)
                     navigate('/example-app/public/admin');
-                } else {
+
+                }else if(response.data.user.rol === "Compras"){
+                    console.log("Sesión iniciada", email, password);
+                    console.log("Administrador: ", response.data.user.nombre, " ", response.data.user.apellido);
+                    alert("Sesión iniciada " + response.data.user.nombre + " " + response.data.user.apellido)
+                    navigate('/example-app/public/compras');
+
+                 }else{
                     alert("Sesión iniciada " + response.data.user.nombre +  " " + response.data.user.apellido)
                     navigate('/example-app/public/');
+
                 }
             }).catch(error => {
                 console.log("error")

@@ -14,8 +14,12 @@ import Admin from "./Admin/Admin";
 import AdminCategorias from "./Admin/AdminCategorias";
 import AdminProductos from "./Admin/AdminProductos";
 import AdminUser from "./Admin/AdminUser";
-
+import ComprasBar from "./Compras/ComprasBar";
+import Compras from "./Compras/Compras";
+import Informe from "./Compras/Informe";
 import AuthProvider from "./AuthContext";
+import Ventas_admin from "./Compras/Ventas_admin";
+import Compras_admin from "./Compras/Compras_admin";
 
 export default function App() {
     return (
@@ -40,6 +44,12 @@ export default function App() {
                             <Route path="admcategorias" element={<AdminCategorias />} />
                             <Route path="admproductos" element={<AdminProductos />} />
                             <Route path="admuser" element={<AdminUser />} />
+                        </Route>
+                        <Route path="/example-app/public/compras" element={<ComprasBar />}>
+                            <Route index element={<Compras />} />
+                            <Route path="informes" element={<Informe />} />
+                            <Route path="ventas_admin" element={<Ventas_admin/>}/>
+                            <Route path="compras_admin" element={<Compras_admin/>}/>
                         </Route>
                     </Routes>
                 </AuthProvider>
